@@ -1,0 +1,191 @@
+:root {
+  /* Палитра: терминальный олимпиадный джадж */
+  --bg: #0a0d08;
+  --surface: #10160d;
+  --surface-2: #161d11;
+  --accent: #b4ff39;
+  --accent-dim: #7fb327;
+  --secondary: #8b5cf6;
+  --danger: #ff4d4d;
+  --text: #d7f5c0;
+  --muted: #6b7d55;
+  --border: rgba(180, 255, 57, 0.18);
+  --border-bright: rgba(180, 255, 57, 0.45);
+
+  --mono: ui-monospace, "SF Mono", "Menlo", "Consolas", monospace;
+  --sans: -apple-system, system-ui, "Segoe UI", sans-serif;
+
+  /* Из темы Telegram, если доступна */
+  --tg-bg: var(--tg-theme-bg-color, var(--bg));
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  -webkit-font-smoothing: antialiased;
+  /* CRT-сетка: тонкая координатная сетка как в терминале */
+  background-image:
+    linear-gradient(rgba(180, 255, 57, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(180, 255, 57, 0.035) 1px, transparent 1px),
+    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(180, 255, 57, 0.06), transparent 70%);
+  background-size:
+    32px 32px,
+    32px 32px,
+    100% 100%;
+  min-height: 100vh;
+}
+
+#root {
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* ——— Общие примитивы ——— */
+
+.screen {
+  padding: 20px 16px calc(20px + env(safe-area-inset-bottom));
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.mono {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+
+/* Уголковые засечки — терминальная рамка */
+.bracketed {
+  position: relative;
+}
+.bracketed::before,
+.bracketed::after {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--accent);
+  opacity: 0.6;
+}
+.bracketed::before {
+  top: -1px;
+  left: -1px;
+  border-right: none;
+  border-bottom: none;
+  border-top-left-radius: 4px;
+}
+.bracketed::after {
+  bottom: -1px;
+  right: -1px;
+  border-left: none;
+  border-top: none;
+  border-bottom-right-radius: 4px;
+}
+
+/* ——— Анимации ——— */
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse-danger {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+
+@keyframes blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 rgba(180, 255, 57, 0);
+  }
+  50% {
+    box-shadow: 0 0 18px rgba(180, 255, 57, 0.35);
+  }
+}
+
+.fadein {
+  animation: fadein 0.25s ease both;
+}
+
+@keyframes vs-slam {
+  0% { transform: scale(0.4) rotate(-8deg); opacity: 0; }
+  60% { transform: scale(1.15) rotate(3deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0); opacity: 1; }
+}
+@keyframes verdict-rise {
+  0% { transform: translateY(14px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+.vs-slam { animation: vs-slam 0.5s cubic-bezier(0.2, 1.4, 0.4, 1) both; }
+.verdict-rise { animation: verdict-rise 0.5s ease 0.35s both; }
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
