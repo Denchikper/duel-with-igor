@@ -1,8 +1,8 @@
 name: Deploy to GitHub Pages
 
+# Автодеплой из main отключён: GitHub Pages занят демо-версией (ветка demo,
+# workflow deploy-pages.yml). Запуск только вручную, если понадобится.
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 permissions:
